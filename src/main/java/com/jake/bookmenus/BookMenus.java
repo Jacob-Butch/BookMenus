@@ -21,7 +21,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Plugin(id = BookMenus.ID, name = BookMenus.NAME, version = BookMenus.VERSION, authors = "Jake")
+@Plugin(id = BookMenus.ID,
+        name = BookMenus.NAME,
+        version = BookMenus.VERSION,
+        authors = "Jake",
+        url = "https://github.com/Jacob-Butch/BookMenus"
+)
 public class BookMenus {
     static final String ID = "bookmenus";
     static final String NAME = "BookMenus";
