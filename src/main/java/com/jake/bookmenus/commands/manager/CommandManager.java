@@ -3,6 +3,7 @@ package com.jake.bookmenus.commands.manager;
 import com.jake.bookmenus.BookMenus;
 import com.jake.bookmenus.commands.*;
 import com.jake.bookmenus.commands.elements.BookCommandElement;
+import com.jake.bookmenus.message.Messages;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -19,53 +20,65 @@ public class CommandManager {
     }
 
     private void registerCommands() {
-        CommandSpec openBookCmd = CommandSpec.builder()
-                .description(OpenBook.getDescription())
+        CommandSpec open = CommandSpec.builder()
+                .description(Text.of(Messages.open))
                 .arguments(GenericArguments.onlyOne(new BookCommandElement(Text.of("bookName"))))
                 .permission(OPENBOOK)
                 .executor(new OpenBook())
                 .build();
-        CommandSpec openHeldBookCmd = CommandSpec.builder()
-                .description(OpenHeldBook.getDescription())
+        CommandSpec openHeld = CommandSpec.builder()
+                .description(Text.of(Messages.openheld))
                 .permission(OPENHELDBOOK)
+                .arguments(GenericArguments.none())
                 .executor(new OpenHeldBook())
                 .build();
-        CommandSpec printBookCmd = CommandSpec.builder()
-                .description(PrintBook.getDescription())
+        CommandSpec print = CommandSpec.builder()
+                .description(Text.of(Messages.print))
                 .permission(PRINTBOOK)
+                .arguments(GenericArguments.optional(new BookCommandElement(Text.of("bookName"))))
                 .executor(new PrintBook())
                 .build();
-        CommandSpec saveBookCmd = CommandSpec.builder()
-                .description(SaveBook.getDescription())
+        CommandSpec save = CommandSpec.builder()
+                .description(Text.of(Messages.save))
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("bookName"))),
                         GenericArguments.optional(GenericArguments.string(Text.of("overwrite"))))
                 .permission(SAVEBOOK)
                 .executor(new SaveBook())
                 .build();
-        CommandSpec bookCopyCmd = CommandSpec.builder()
-                .description(BookCopy.getDescription())
+        CommandSpec copy = CommandSpec.builder()
+                .description(Text.of(Messages.copy))
                 .arguments(GenericArguments.onlyOne(new BookCommandElement(Text.of("bookName"))))
                 .permission(BOOKCOPY)
                 .executor(new BookCopy())
                 .build();
-        CommandSpec colorBookCmd = CommandSpec.builder()
-                .description(ColorBook.getDescription())
-                .permission(COLORBOOK)
-                .executor(new ColorBook())
+        CommandSpec serialize = CommandSpec.builder()
+                .description(Text.of(Messages.serialize))
+                .permission(SERIALIZEBOOK)
+                .arguments(GenericArguments.none())
+                .executor(new SerializeBook())
                 .build();
-        CommandSpec sendBookCmd = CommandSpec.builder()
-                .description(SendBook.getDescription())
+        CommandSpec send = CommandSpec.builder()
+                .description(Text.of(Messages.open))
                 .arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))),
                         GenericArguments.onlyOne(new BookCommandElement(Text.of("bookName"))))
                 .permission(SENDBOOK)
                 .executor(new SendBook())
                 .build();
-        Sponge.getCommandManager().register(bm, openBookCmd, OpenBook.getAlias());
-        Sponge.getCommandManager().register(bm, openHeldBookCmd, OpenHeldBook.getAlias());
-        Sponge.getCommandManager().register(bm, printBookCmd, PrintBook.getAlias());
-        Sponge.getCommandManager().register(bm, saveBookCmd, SaveBook.getAlias());
-        Sponge.getCommandManager().register(bm, bookCopyCmd, BookCopy.getAlias());
-        Sponge.getCommandManager().register(bm, colorBookCmd, ColorBook.getAlias());
-        Sponge.getCommandManager().register(bm, sendBookCmd, SendBook.getAlias());
+
+        CommandSpec main = CommandSpec.builder()
+                .permission(MAIN)
+                .description(Book.getDescription())
+                .child(open, "open")
+                .child(openHeld, "openheld")
+                .child(print, "print")
+                .child(save, "save")
+                .child(copy, "copy")
+                .child(serialize, "serialize")
+                .child(send, "send")
+                .executor(new Book())
+                .arguments(GenericArguments.none())
+                .build();
+
+        Sponge.getCommandManager().register(bm, main, Book.getAlias());
     }
 }
