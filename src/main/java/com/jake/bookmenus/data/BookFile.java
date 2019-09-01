@@ -25,15 +25,17 @@ public class BookFile {
         this.loadBook(bookname, pages);
     }
 
+    // Creates a file for a book with the given name and pages
     private void loadBook(String bookName, List<String> pages) throws ObjectMappingException {
         book = bookName;
-        Path path = BookDataUtil.getBookFile(book);
-        loader = BookDataUtil.getLoader(book);
+        Path path = BookData.getBookFile(book);
+        loader = BookData.getLoader(book);
         try {
-            if(!Files.exists(path))
+            if(!Files.exists(path)) {
                 Files.createFile(path);
-            if(main == null)
-                main = loader.load(ConfigurationOptions.defaults().setShouldCopyDefaults(true));
+            }
+
+            main = loader.load(ConfigurationOptions.defaults().setShouldCopyDefaults(true));
 
             CommentedConfigurationNode data = main.getNode("book");
             data.setComment("Book data for " + book);
@@ -47,29 +49,9 @@ public class BookFile {
         this.loadData();
     }
 
-    private static void saveData() {
-        try {
-            loader.save(main);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void reload() {
-        try {
-            main = loader.load();
-            this.loadData();
-        } catch (IOException | ObjectMappingException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void loadData() throws ObjectMappingException {
         book = main.getNode("book", "bookName").getString();
         bookPages = main.getNode("bookPages").getList(of(String.class));
     }
-
-    public CommentedConfigurationNode getMain() {return main;}
 }
 

@@ -22,8 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Plugin(id = BookMenus.ID, name = BookMenus.NAME, version = BookMenus.VERSION, authors = "Jake")
-public class BookMenus
-{
+public class BookMenus {
     static final String ID = "bookmenus";
     static final String NAME = "BookMenus";
     static final String VERSION = "1.0";
@@ -32,14 +31,12 @@ public class BookMenus
     public static Logger logger;
     private static PluginContainer pc;
     private static Path configdirpath;
-    private static Path mainConfigPath;
     private static Path bookPath;
 
     @Inject
     public BookMenus(@ConfigDir(sharedRoot = true) Path path, PluginContainer pluginContainer) {
         pc = pluginContainer;
         configdirpath = path.resolve(ID);
-        mainConfigPath = Paths.get(getConfigPath().toString() + File.separator + "bookmenus.conf");
         bookPath = Paths.get(getConfigPath().toString() + File.separator + "books");
         logger = LoggerFactory.getLogger("BookMenus");
     }
@@ -48,17 +45,17 @@ public class BookMenus
     public void onGamePreInit(@Nullable final GamePreInitializationEvent event) {
         logger.info("BookMenus Initializing...");
 
-        if (!Files.exists(mainConfigPath)){
+        if(!Files.exists(getConfigPath())) {
             try {
-                if(!Files.exists(getConfigPath()))
-                    Files.createDirectory(getConfigPath());
+                Files.createDirectory(getConfigPath());
             } catch (IOException e) {
-                logger.error("Error on creating root config directory: {}", e);
+                logger.error("Error on creating root directory", e);
             }
         }
 
-        if(!Files.exists(bookPath))
+        if(!Files.exists(bookPath)) {
             new BookDirectory();
+        }
 
         instance = this;
     }

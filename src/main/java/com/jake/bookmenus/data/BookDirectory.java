@@ -6,14 +6,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class BookDirectory {
+
     public BookDirectory() {
         makeBookDirectory();
     }
 
-    private static void makeBookDirectory(){
+    // Creates the book directory if it doesnt exist already
+    private void makeBookDirectory(){
         try {
-            if (!Files.exists(BookMenus.getBookPath()))
+            if (!Files.exists(BookMenus.getBookPath())) {
                 Files.createDirectories(BookMenus.getBookPath());
+            }
         } catch (final IOException exx) {
             BookMenus.logger.error("Error on creating Books directory!");
         }

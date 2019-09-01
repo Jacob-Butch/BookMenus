@@ -1,6 +1,6 @@
 package com.jake.bookmenus.commands;
 
-import com.jake.bookmenus.data.BookDataUtil;
+import com.jake.bookmenus.data.BookData;
 import com.jake.bookmenus.data.BookFile;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.command.CommandException;
@@ -21,15 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SaveBook implements CommandExecutor {
-
-    public SaveBook() {
-    }
-
-    public static Text getDescription() {
-        return Text.of("/savebook");
-    }
-
-    public static String[] getAlias() { return new String[]{"savebook"}; }
 
     @Nonnull
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
@@ -55,7 +46,7 @@ public class SaveBook implements CommandExecutor {
             throw new CommandException(Text.of("You do not have an item in your hand!"));
         }
         if(!pages.isEmpty()) {
-            if(!Files.exists(BookDataUtil.getBookFile(bookName))) {
+            if(!Files.exists(BookData.getBookFile(bookName))) {
                 try {
                     new BookFile(bookName, pages);
                     player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&3A book with the name &b" + bookName + " &3has been created!"));
@@ -64,7 +55,7 @@ public class SaveBook implements CommandExecutor {
                 }
             } else {
                 if(overwrite.equals("-o")){
-                    BookDataUtil.setBookPages(bookName, pages);
+                    BookData.setBookPages(bookName, pages);
                     player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize("&b" + bookName + " &3has been successfully overwritten!"));
                 } else {
                     throw new CommandException(Text.of("There is already a book with that name! Run the command again with '-o' to overwrite it."));

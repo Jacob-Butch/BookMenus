@@ -1,6 +1,6 @@
 package com.jake.bookmenus.commands;
 
-import com.jake.bookmenus.data.BookDataUtil;
+import com.jake.bookmenus.data.BookData;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -19,15 +19,6 @@ import java.util.List;
 
 public class OpenBook implements CommandExecutor {
 
-    public OpenBook() {
-    }
-
-    public static Text getDescription() {
-        return Text.of("/openbook");
-    }
-
-    public static String[] getAlias() { return new String[]{"openbook"}; }
-
     @Nonnull
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
         if (!(src instanceof Player)) {
@@ -36,11 +27,11 @@ public class OpenBook implements CommandExecutor {
         Player player = (Player) src;
         String book = args.<String>getOne("bookName").orElse("");
         if(!book.equals("")) {
-            if(!Files.exists(BookDataUtil.getBookFile(book)))
+            if(!Files.exists(BookData.getBookFile(book)))
                 throw new CommandException(Text.of("That book file does not exist!"));
             List<String> spages;
             try {
-               spages = BookDataUtil.getBookPages(book);
+               spages = BookData.getBookPages(book);
             } catch (ObjectMappingException e) {
                 e.printStackTrace();
                 return CommandResult.empty();
