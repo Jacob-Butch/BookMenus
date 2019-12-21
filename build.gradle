@@ -7,13 +7,15 @@ plugins {
 compileJava.options.encoding = 'UTF-8'
 
 group = 'com.jake'
-version = '1.0'
+version = '1.1'
 description = 'Usable book menus for minecraft'
 
 repositories {
     jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     compile 'org.spongepowered:spongeapi:7.1.0'
+    compile 'com.github.rojo8399:PlaceholderAPI:4.5.1'
 }
