@@ -64,7 +64,7 @@ public class CommandManager {
                 .build();
 
         CommandSpec main = CommandSpec.builder()
-                .permission("bookmenus.command.book")
+                .permission("bookmenus.command.book.base")
                 .description(Book.getDescription())
                 .child(open, "open")
                 .child(openHeld, "openheld")

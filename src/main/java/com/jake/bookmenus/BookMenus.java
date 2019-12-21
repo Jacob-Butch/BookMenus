@@ -25,7 +25,7 @@ import java.nio.file.Paths;
 public class BookMenus {
     static final String ID = "bookmenus";
     static final String NAME = "BookMenus";
-    static final String VERSION = "1.1";
+    static final String VERSION = "1.1.1";
 
     private static BookMenus instance;
     public static Logger logger;
