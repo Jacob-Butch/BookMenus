@@ -1,5 +1,6 @@
 package com.jake.bookmenus.data;
 
+import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -11,11 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static com.google.common.reflect.TypeToken.of;
-
+@SuppressWarnings("UnstableApiUsage")
 @ConfigSerializable
 public class BookFile {
-    private static ConfigurationLoader<CommentedConfigurationNode> loader;
     private static CommentedConfigurationNode main;
 
     public static String book;
@@ -29,7 +28,7 @@ public class BookFile {
     private void loadBook(String bookName, List<String> pages) throws ObjectMappingException {
         book = bookName;
         Path path = BookData.getBookFile(book);
-        loader = BookData.getLoader(book);
+        ConfigurationLoader<CommentedConfigurationNode> loader = BookData.getLoader(book);
         try {
             if(!Files.exists(path)) {
                 Files.createFile(path);
@@ -40,7 +39,7 @@ public class BookFile {
             CommentedConfigurationNode data = main.getNode("book");
             data.setComment("Book data for " + book);
             data.getNode("bookName").getString(book);
-            data.getNode("bookPages").getList(of(String.class), pages);
+            data.getNode("bookPages").getList(TypeToken.of(String.class), pages);
             loader.save(main);
         } catch (IOException | ObjectMappingException e) {
             e.printStackTrace();
@@ -51,7 +50,7 @@ public class BookFile {
 
     private void loadData() throws ObjectMappingException {
         book = main.getNode("book", "bookName").getString();
-        bookPages = main.getNode("bookPages").getList(of(String.class));
+        bookPages = main.getNode("bookPages").getList(TypeToken.of(String.class));
     }
 }
 

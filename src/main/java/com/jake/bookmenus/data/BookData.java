@@ -39,6 +39,7 @@ public class BookData {
     }
 
     // Gets a list of pages from a book file
+    @SuppressWarnings("UnstableApiUsage")
     public static List<String> getBookPages(String book) throws ObjectMappingException {
         return Objects.requireNonNull(getLoadedBookNode(book)).getNode("book", "bookPages").getList(of(String.class));
     }
